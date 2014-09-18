@@ -28,7 +28,7 @@ def netflix_read (r) :
     return int(m), sum_a/count_a
 
 def main():
-  for i in range (1, 9):
+  for i in range (1, 17771):
     x = "/u/downing/cs/netflix/training_set/mv_"+str(i).zfill(7)+".txt"
     
     opn = open (x, "r")
