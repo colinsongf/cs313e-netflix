@@ -16,9 +16,14 @@ def collatz_read (r) :
     return sum/count
 
 def main():
-  opn = open ("training_set.txt", "r")
-  x = collatz_read(opn)
-  print(x)
-  opn.close()
+
+  for i in range (1, 10):
+    x = ""
+    x = "mv_"+"000000"+str(i)+".txt"
+    
+    opn = open ("x", "r")
+    y = collatz_read(opn)
+    print(y)
+    opn.close()
 
 main()
