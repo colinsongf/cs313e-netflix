@@ -15,7 +15,7 @@ def rmse (r, p):
     assert (len(p) == len(r))
     sum = 0
     for i in range (len(p)):
-      sq_diff = (r[i] - p[i]) ** 2
+      sq_diff = (float(r[i]) - int(p[i])) ** 2
       sum += sq_diff
     mean = sum / len(r)
     sq_root = mean ** .5
@@ -27,27 +27,35 @@ def netflix_print (w, v) :
 def netflix_solve (r, w) :
     ## this list is used to print movie ratings
     cashe = []
-    # list_movie = list for input movie
-    list_movie = []
+
+    # list_user = list for input customer ID
+    list_user = []
+
     # dict_movie = dictionary for movie ID from cashe_output.txt
     dict_movie = {}
+    # dict_user = dictionary for customer ID from savant-cacheUsers.txt
+    dict_user = {}
+
+    # found_movie = search the input movie in c_movie
+    found_movie = []
+
+    # found_user = search the input muser in c_user
+    found_user = []
+
     ## this list is used as an actual cashe
-    c_user = open("/u/hyunji/cs313e-netflix/savant-cacheUsers.txt", "r")
+    c_user = open("savant-cacheUsers.txt", "r")
     
-    c_movie = open("/u/hyunji/cs313e-netflix/cashe_output.txt", "r")
-    movie = ""
-    movie_rtg = ""
-    for line in c_movie:
+    c_movie = open("cashe_output.txt", "r")
+    user = ""
+    user_rtg = ""
+    for line in c_user:
         line = line.strip()
         space = line.find(" ")
         if space > -1:
-            movie = line[:space]
-            movie_rtg = line[space + 1:]
-        # movie, movie_rtg = line.split(" ")
-            dict_movie[movie] = movie_rtg
-      
-    ## this list is used to skip movies to calculate rmse
-    skip_movies = []
+            user = line[:space]
+            user_rtg = line[space + 1:]
+            dict_user[user] = user_rtg
+
     l = " "
     while True :
         a = netflix_read(r)        
@@ -55,28 +63,44 @@ def netflix_solve (r, w) :
           for i in range (len(cashe)):
             netflix_print(w, cashe[i])
 
-          rms = rmse(c_user, skip_movies)
-          netflix_print(w, rms)
+          rms = rmse(found_user, list_user)
+          print("rmse:", rms)
           return
         else:
           f = a.find(":")
+          ## if runs for user IDs
           if f < 0 :
-            # a = customer ID
-            # p = rating for customer
-            p = predict_ratings(a)
-            # c_user.append(4)
-            cashe.append(p)
-            skip_movies.append(p)
-          else:
-            list_movie.append(a)
-            cashe.append(a)
-            
-#        x = len(c_public)
-#        y = len(cashe)
-        print(x, y)
-#    rms = rmse(c_public, cashe)
-#    netflix_print(w, rms)
 
+            if a in dict_user: 
+              found_user.append(dict_user[a])
+#              print("f_u", found_user)
+            
+              # a = customer ID
+              # p = rating for customer       
+              p = predict_ratings(a)
+            
+              # list_user contains user ratings
+              list_user.append(p)
+#              print("l_u", list_user)
+            
+              # cashe contains user rating to print 
+              cashe.append(p)
+
+            else:
+              cashe.append("DNE")
+          
+          else:
+            cashe.append(a)
+
+'''
+            a = a[:f]
+            list_movie.append(a)
+            ## search for "a" in dict_movie
+            if a in dict_movie:
+              found_user.append(dict_movie[a])
+              
+              print(found_user)
+'''
 
 
 netflix_solve(sys.stdin, sys.stdout)
