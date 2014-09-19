@@ -1,12 +1,13 @@
+# cache for average rating/movie
+
 import math
 import string
 
 def netflix_read (r) :
     s = r.readline()
-    # use s[-1:]? m = s[:-1]
-    # m = movie ID
     z = s.find(":")
-    if z > -1:
+    # m = movie ID
+    if (z > -1):
         m = s[:z]
 
     sum_a = 0
