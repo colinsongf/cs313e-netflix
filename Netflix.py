@@ -8,8 +8,15 @@ def netflix_read (r) :
       return
     return line
 
-def predict_ratings(a):
-  return 3
+# calculates offset
+def predict_ratings(a, overall_mean):
+#  if a in dict_movie:
+
+
+  if a in dict_user:
+    a_rating = dict_user[a]
+    rating = abs(overall_mean - a_rating)
+  return rating
 
 def rmse (r, p):
   assert (len(p) == len(r))
@@ -25,21 +32,24 @@ def netflix_print (w, v) :
   w.write(str(v) + "\n")
 
 def netflix_solve (r, w) :
-  ## this list is used to print movie ratings
+  ## this list is used for general input 
   cashe = []
 
-  # dict_movie = dictionary for movie ID from cashe_output.txt
+  # our_predict = list for input customer ID
+  our_predict = []
+
+  # dict_movie = dictionary for actual ratings
   dict_movie = {}
-  # found_movie = search the input movie in c_movie
-  found_movie = []
-  # list_movie = list for movie ID
+  # list_movie = search the input movie in c_movie
+  # lists all the ratings for individual movie
+  list_movie = []
 
   # dict_user = dictionary for customer ID from savant-cacheUsers.txt
   dict_user = {}
-  # found_user = search the input muser in c_user
-  found_user = []
-  # list_user = list for input customer ID
+  # list_user = search the input muser in c_user
+  # lists all the ratings for individual user
   list_user = []
+
 
   ## this list is used as an actual cashe
   c_user = open("savant-cacheUsers.txt", "r")
@@ -66,54 +76,42 @@ def netflix_solve (r, w) :
       dict_movie[movie] = movie_rtg
 
 
-#  l = " "
   while True :
     a = netflix_read(r)        
     if not a :
       for i in range (len(cashe)):
             netflix_print(w, cashe[i])
 
-      rms = rmse(found_user, list_user)
-      rms2 = rmse(found_movie, list_movie)
+      rms = rmse(list_user, our_predict)
+#      rms2 = rmse(list_movie, our_predict)
       print("rmse for user:", rms)
-      print("rmse for movie:", rms2)
       return
     else:
       f = a.find(":")
       ## if runs for user IDs
       if f < 0 :
         # a = customer ID
-        # p = rating for customer       
-        p = predict_ratings(a) 
+
         if a in dict_user: 
-          found_user.append(dict_user[a])
+          # p = rating for customer     
+          overall_mean = []
+          overall_mean = overall_mean + (dict_user[a]/len(dict_user.keys()))
+          p = predict_ratings(a, overall_mean) + overall_mean
+
+          list_user.append(dict_user[a])
 #         print("f_u", found_user)
 
           # list_user contains user ratings
-          list_user.append(p)
+          our_predict.append(p)
 #         print("l_u", list_user)
           # cashe contains user rating to print 
           cashe.append(p)
         else:
           cashe.append("DNE")
-
-        if f in dict_movie:
-          found_movie.append(dict_movie[f])
-          dict_movie[f] = p
-          list_movie.append(p)
           
       else:
         cache.append(a)
-        dict_movie.append(f)
-'''
-            a = a[:f]
-            list_movie.append(a)
-            ## search for "a" in dict_movie
-            if a in dict_movie:
-              found_user.append(dict_movie[a])
-              
-              print(found_user)
-'''
+
 
 netflix_solve(sys.stdin, sys.stdout)
 
