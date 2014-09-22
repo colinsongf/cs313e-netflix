@@ -32,6 +32,7 @@ def netflix_print (w, v) :
   w.write(str(v) + "\n")
 
 def netflix_solve (r, w) :
+<<<<<<< HEAD
   ## this list is used for general input 
   cashe = []
 
@@ -39,6 +40,12 @@ def netflix_solve (r, w) :
   our_predict = []
 
   # dict_movie = dictionary for actual ratings
+=======
+  ## this list is used to print movie ratings
+  cache = []
+
+  # dict_movie = dictionary for movie ID from cache_output.txt
+>>>>>>> aaa696fd083eb68962f93ea96a3d6d024978efca
   dict_movie = {}
   # list_movie = search the input movie in c_movie
   # lists all the ratings for individual movie
@@ -50,8 +57,12 @@ def netflix_solve (r, w) :
   # lists all the ratings for individual user
   list_user = []
 
+<<<<<<< HEAD
 
   ## this list is used as an actual cashe
+=======
+  ## this list is used as an actual cache
+>>>>>>> aaa696fd083eb68962f93ea96a3d6d024978efca
   c_user = open("savant-cacheUsers.txt", "r")
   user = ""
   user_rtg = ""
@@ -79,8 +90,8 @@ def netflix_solve (r, w) :
   while True :
     a = netflix_read(r)        
     if not a :
-      for i in range (len(cashe)):
-            netflix_print(w, cashe[i])
+      for i in range (len(cache)):
+            netflix_print(w, cache[i])
 
       rms = rmse(list_user, our_predict)
 #      rms2 = rmse(list_movie, our_predict)
@@ -104,10 +115,19 @@ def netflix_solve (r, w) :
           # list_user contains user ratings
           our_predict.append(p)
 #         print("l_u", list_user)
-          # cashe contains user rating to print 
-          cashe.append(p)
+          # cache contains user rating to print 
+          cache.append(p)
         else:
+<<<<<<< HEAD
           cashe.append("DNE")
+=======
+          cache.append("DNE")
+
+        if f in dict_movie:
+          found_movie.append(dict_movie[f])
+          dict_movie[f] = p
+          list_movie.append(p)
+>>>>>>> aaa696fd083eb68962f93ea96a3d6d024978efca
           
       else:
         cache.append(a)
