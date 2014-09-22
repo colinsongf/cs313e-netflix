@@ -9,13 +9,10 @@ def netflix_read (r) :
     return line
 
 # calculates offset
-def predict_ratings(a, overall_mean):
+def predict_ratings(a_rating, overall_mean):
 #  if a in dict_movie:
 
-
-  if a in dict_user:
-    a_rating = dict_user[a]
-    rating = abs(overall_mean - a_rating)
+  rating = abs(overall_mean - float(a_rating))
   return rating
 
 def rmse (r, p):
@@ -32,7 +29,7 @@ def netflix_print (w, v) :
   w.write(str(v) + "\n")
 
 def netflix_solve (r, w) :
-<<<<<<< HEAD
+
   ## this list is used for general input 
   cashe = []
 
@@ -40,12 +37,12 @@ def netflix_solve (r, w) :
   our_predict = []
 
   # dict_movie = dictionary for actual ratings
-=======
+
   ## this list is used to print movie ratings
   cache = []
 
   # dict_movie = dictionary for movie ID from cache_output.txt
->>>>>>> aaa696fd083eb68962f93ea96a3d6d024978efca
+
   dict_movie = {}
   # list_movie = search the input movie in c_movie
   # lists all the ratings for individual movie
@@ -57,12 +54,12 @@ def netflix_solve (r, w) :
   # lists all the ratings for individual user
   list_user = []
 
-<<<<<<< HEAD
+
 
   ## this list is used as an actual cashe
-=======
+
   ## this list is used as an actual cache
->>>>>>> aaa696fd083eb68962f93ea96a3d6d024978efca
+
   c_user = open("savant-cacheUsers.txt", "r")
   user = ""
   user_rtg = ""
@@ -104,10 +101,12 @@ def netflix_solve (r, w) :
         # a = customer ID
 
         if a in dict_user: 
-          # p = rating for customer     
-          overall_mean = []
-          overall_mean = overall_mean + (dict_user[a]/len(dict_user.keys()))
-          p = predict_ratings(a, overall_mean) + overall_mean
+          # p = rating for customer  
+#          print(type(dict_user[a]))
+#          print(dict_user.keys())
+          overall_mean = 0
+          overall_mean = overall_mean + (float(dict_user[a])/len(dict_user.keys()))
+          p = predict_ratings(dict_user[a], overall_mean) + overall_mean
 
           list_user.append(dict_user[a])
 #         print("f_u", found_user)
@@ -118,16 +117,16 @@ def netflix_solve (r, w) :
           # cache contains user rating to print 
           cache.append(p)
         else:
-<<<<<<< HEAD
+
           cashe.append("DNE")
-=======
+
           cache.append("DNE")
 
         if f in dict_movie:
           found_movie.append(dict_movie[f])
           dict_movie[f] = p
           list_movie.append(p)
->>>>>>> aaa696fd083eb68962f93ea96a3d6d024978efca
+
           
       else:
         cache.append(a)
