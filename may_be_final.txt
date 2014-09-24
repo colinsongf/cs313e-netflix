@@ -1,0 +1,76 @@
+-----------
+-----------
+3.4558089029004244
+3.2534279505194723
+9997:
+3.6650327499195474
+3.8340198087138537
+3.758369549800694
+3.9560340359335804
+9998:
+3.045530157255825
+3.277237474328996
+3.902237474328996
+9999:
+2.577237474328996
+rmse for user: 0.9295345076221808
+
+
+
+-------------------- this "while" was used ----------------------
+  while True :
+    a = netflix_read(r) 
+
+    ## this "if" runs after reading all the input       
+    if not a :
+      
+      for i in range (len(cache)):
+            ## accessing each element from "cache" which includes iputted movie IDs & 
+            ## predicted ratings for iputted customer IDs. 
+            ## (predicting ratings include user_mean & user offset)
+            
+            each_element = str(cache[i])             
+            f = each_element.find(":")
+
+            ## "if" runs if each_element contains a movie ID
+            if f > -1:
+               movie_id = each_element[:f]
+            
+            ## uses the movie-id from "if" statement & uses that movie_id to calculate movie offset
+            else:
+               ## list_movie = list of actual movie ratings
+               list_movie.append(dict_movie[movie_id])
+               
+            ## printing final prediction (supposed to)
+            netflix_print(w, cache[i])
+
+# ------------I compared predicted ratings with each movie ratings in RMSE. I guess that's where the problem is?-----------------
+
+      rms = rmse(list_movie, our_predict_u)
+      print("rmse for user:", rms)
+      return
+    else:
+      f = a.find(":")
+      ## if runs for user IDs
+      if f < 0 :
+          # a = customer ID for this if statement
+                
+          ## adding the actual ratings for user "a"
+          list_user.append(dict_user[a])
+
+          ## calculates user offset
+          user_offset = predict_offset(dict_user[a], user_mean)
+
+# ---------- Used this combination to predict rating -------------------------------------------
+
+          prediction = ((user_mean + movie_mean) / 2) + user_offset
+                  
+          # our_predict contains predicted ratings with user offset
+          our_predict_u.append(prediction)
+        
+          # cache contains user rating to print 
+          cache.append(prediction)
+          
+      ## this "else" runs if it finds the movie ID in input     
+      else:        
+          cache.append(a)
