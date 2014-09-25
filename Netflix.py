@@ -1,6 +1,8 @@
 
 import sys
 
+## ======== functions ==============
+
 def netflix_read (r) :
   for line in r:
     line = line.strip()
@@ -37,6 +39,8 @@ def netflix_solve (r, w) :
   # list_user = search the input user in c_user
   # lists all the ratings for individual user
   list_user = []
+
+## =========== CACHES ========================
 
 # -------------- "actual" has actual output -------------------------------------------------------------------
     
@@ -76,7 +80,7 @@ def netflix_solve (r, w) :
   movie_mean = sum_m / len(dict_movie)
   mode_mean = sum_mode / len(dict_movie)
 
-# --------------------------------------------------------------------------------------------------------------------------------------
+# ========================= PROGRAM ===================================
   
   probe = []
 
@@ -121,8 +125,8 @@ def netflix_solve (r, w) :
                    final_prediction = 2
 
                our_predict.append(final_prediction)
-     	       
-		## list_movie = list of actual movie ratings
+             
+    ## list_movie = list of actual movie ratings
                list_movie.append(dict_movie[movie_id])
                netflix_print(w, final_prediction)
                
@@ -150,5 +154,6 @@ def netflix_solve (r, w) :
           probe.append(a)
 
   
+# ======== standard in/out ==============
 netflix_solve(sys.stdin, sys.stdout)
 
