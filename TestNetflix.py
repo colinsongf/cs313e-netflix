@@ -40,16 +40,5 @@ class TestNetflix (TestCase) :
         w = StringIO()
         netflix_solve(r, w)
         self.assertEqual(w.getvalue(), "1:\n")
-        '''
-    def test_solve_2 (self) :
-        r = StringIO("1:\n30878")
-        w = StringIO()
-        netflix_solve(r, w)
-        self.assertEqual(w.getvalue(), "1:\n")
-    def test_solve_3 (self) :
-        r = StringIO("")
-        w = StringIO()
-        netflix_solve(r, w)
-        self.assertEqual(w.getvalue(), "1:\n")
-        '''
+
 main()
