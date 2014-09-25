@@ -36,9 +36,9 @@ def netflix_solve (r, w) :
   # lists all the ratings for individual user in c_user
   list_user = []
 
-## =========== CACHES ========================
+## ================================ CACHES =================================
 
-# -------------- "actual" has actual output -------------------------------------------------------------------
+# -------------- "actual" has actual output --------------------
     
   actual = []
   actual_rtgs = open("/u/prat0318/netflix-tests/erb988-ProbeAnswers.txt", "r")
@@ -48,8 +48,8 @@ def netflix_solve (r, w) :
      if f < 0:
        actual.append(line)
      
-  
-# -------------- dict_user has customer IDs as keys & average rtgs of each customer as values--------------------------------------------------
+
+# -------------- dict_user = {customer IDs: average rtgs of each customer} -----------
   dict_user = {}
   c_user = open("/u/prat0318/netflix-tests/ctd446-userAverageRating.txt", "r")
   dict_user = eval(c_user.readline()) 
@@ -58,7 +58,7 @@ def netflix_solve (r, w) :
     sum += float(i) 
   user_mean = sum / len(dict_user)
 
-# -------------- dict_movie has movie IDs as keys & average rtgs of each movie as values--------------------------------------------------  
+# -------------- dict_movie = {movie IDs: average rtgs of each movie} --------------- 
 
 # cache for actual average and mode per movie
   c_movie = open("/u/prat0318/netflix-tests/aip256-cacheAvgAndModeRatingPerMovie.txt", "r")
@@ -76,7 +76,7 @@ def netflix_solve (r, w) :
   movie_mean = sum_m / len(dict_movie)
   mode_mean = sum_mode / len(dict_movie)
 
-# ========================= PROGRAM ===================================
+# ============================================ PROGRAM =========================================================
   # probe = reads in probe data
   probe = []
 
