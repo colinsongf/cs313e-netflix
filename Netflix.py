@@ -30,14 +30,10 @@ def netflix_print (w, v) :
   w.write(str(v) + "\n")
 
 def netflix_solve (r, w) :
-
-
-  # list_movie = search the input movie in c_movie
-  # lists all the ratings for individual movie
+  # lists all the ratings for individual movie in c_movie
   list_movie = []
 
-  # list_user = search the input user in c_user
-  # lists all the ratings for individual user
+  # lists all the ratings for individual user in c_user
   list_user = []
 
 ## =========== CACHES ========================
