@@ -81,7 +81,7 @@ def netflix_solve (r, w) :
   mode_mean = sum_mode / len(dict_movie)
 
 # ========================= PROGRAM ===================================
-  
+  # probe = reads in probe data
   probe = []
 
   # u_offset = dictionary for user_offset with user ID as keys
@@ -108,25 +108,22 @@ def netflix_solve (r, w) :
             if f > -1:
                movie_id = int(element[:f])
                
-            
             ## uses the movie-id from "if" statement & uses that movie_id to calculate movie offset
-            else:
-                           
+            else:      
                movie_offset = predict_offset(dict_movie[movie_id][0], movie_mean)
-               
                
                ## element = user_offset
                final_prediction =  movie_mean + float(element) + movie_offset
                
-               ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
                if final_prediction > 5:
                    final_prediction = 5
                if final_prediction < 2:
                    final_prediction = 2
 
+               ## our_predict = list of predicted ratings with movie_offset, user_offset & movie_mean
                our_predict.append(final_prediction)
              
-    ## list_movie = list of actual movie ratings
+               ## list_movie = list of actual movie ratings
                list_movie.append(dict_movie[movie_id])
                netflix_print(w, final_prediction)
                
