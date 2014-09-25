@@ -1,7 +1,7 @@
 
 import sys
 
-## ======== functions ==============
+## =========================== functions ================================
 
 def netflix_read (r) :
   for line in r:
@@ -126,9 +126,6 @@ def netflix_solve (r, w) :
                ## list_movie = list of actual movie ratings
                list_movie.append(dict_movie[movie_id])
                netflix_print(w, final_prediction)
-               
-            ## printing final prediction (supposed to)
-#            netflix_print(w, cache[i])
 
       rms2 = rmse(actual, our_predict)
       print("RMSE:", round(rms2, 3)
@@ -149,8 +146,6 @@ def netflix_solve (r, w) :
       else:        
           u_offset.append(a)
           probe.append(a)
-
   
 # ======== standard in/out ==============
 netflix_solve(sys.stdin, sys.stdout)
-
