@@ -40,13 +40,15 @@ def netflix_solve (r, w) :
 
 # -------------- "actual" has actual output --------------------
     
-  actual = []
+  actual = {}
   actual_rtgs = open("/u/prat0318/netflix-tests/erb988-ProbeAnswers.txt", "r")
   for line in actual_rtgs:
-     line = line.strip()
-     f = line.find(":")
-     if f < 0:
-       actual.append(line)
+    line = line.strip()
+    f = line.find(":")
+    if f > 0:
+      key = line
+    elif f < 0:
+      actual[key] = line
      
 
 # -------------- dict_user = {customer IDs: average rtgs of each customer} -----------
@@ -82,6 +84,9 @@ def netflix_solve (r, w) :
 
   # u_offset = dictionary for user_offset with user ID as keys
   u_offset = []
+
+  # contain actual ratings for inputted movie/user
+  list_actual = []
 
   # our_predict = list for input customer ID
   our_predict = []  
@@ -121,9 +126,12 @@ def netflix_solve (r, w) :
              
                ## list_movie = list of actual movie ratings
                list_movie.append(dict_movie[movie_id])
-               netflix_print(w, final_prediction)
+               netflix_print(w, round(final_prediction, 2)
 
-      rms2 = rmse(actual, our_predict)
+            ## printing final prediciton (supposed to)
+            netflix_print(w, cache[i])
+
+      rms2 = rmse(list_actual, our_predict)
       print("RMSE:", round(rms2, 3)
       return
     else:
