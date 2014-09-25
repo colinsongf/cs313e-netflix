@@ -47,8 +47,6 @@ def netflix_solve (r, w) :
      f = line.find(":")
      if f < 0:
        actual.append(line)
-  
-
      
   
 # -------------- dict_user has customer IDs as keys & average rtgs of each customer as values--------------------------------------------------
