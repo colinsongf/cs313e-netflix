@@ -41,7 +41,7 @@ def netflix_solve (r, w) :
 # -------------- "actual" has actual output -------------------------------------------------------------------
     
   actual = []
-  actual_rtgs = open("erb988-ProbeAnswers.txt", "r")
+  actual_rtgs = open("/u/prat0318/netflix-tests/erb988-ProbeAnswers.txt", "r")
   for line in actual_rtgs:
      line = line.strip()
      f = line.find(":")
@@ -53,7 +53,7 @@ def netflix_solve (r, w) :
   
 # -------------- dict_user has customer IDs as keys & average rtgs of each customer as values--------------------------------------------------
   dict_user = {}
-  c_user = open("ctd446-userAverageRating.txt", "r")
+  c_user = open("/u/prat0318/netflix-tests/ctd446-userAverageRating.txt", "r")
   dict_user = eval(c_user.readline()) 
   sum = 0
   for i in dict_user.values():
@@ -63,7 +63,7 @@ def netflix_solve (r, w) :
 # -------------- dict_movie has movie IDs as keys & average rtgs of each movie as values--------------------------------------------------  
 
 # cache for actual average and mode per movie
-  c_movie = open("aip256-cacheAvgAndModeRatingPerMovie.txt", "r")
+  c_movie = open("/u/prat0318/netflix-tests/aip256-cacheAvgAndModeRatingPerMovie.txt", "r")
   dict_movie = eval(c_movie.readline())
   sum_m = 0
   sum_mode = 0
@@ -132,7 +132,7 @@ def netflix_solve (r, w) :
 #            netflix_print(w, cache[i])
 
       rms2 = rmse(actual, our_predict)
-      print("rmse for user:", rms2)
+      print("RMSE:", round(rms2, 3)
       return
     else:
       f = a.find(":")
