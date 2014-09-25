@@ -10,23 +10,46 @@ from Netflix import netflix_read, predict_ratings, netflix_print, netflix_solve
 # -----------
 
 class TestNetflix (TestCase) :
-    def test_read (self) :
-        r = StringIO("2043:\n1417435\n2312054\n462685\n")
-        j = netflix_read(r)
-        self.assertEqual(j, [1417435, 2312054, 462685])
-
-    def test_eval_1 (self) :
-        self.assertEqual(predict_ratings(j), 3)
-
-    def test_print (self) :
-        w = StringIO()
-        netflix_print(w, "2043:")
-        self.assertEqual(w.getvalue(), "2043:\n")
-
-    def test_solve (self) :
-        r = StringIO("2043:\n1417435\n2312054\n462685\n")
+    def test_read_1 (self) :
+        r = StringIO("")
+        i = netflix_read(r)
+        self.assertEqual(i, None)
+    def test_read_2 (self) :
+        r = StringIO("1:\n")
+        i = netflix_read(r)
+        self.assertEqual(i, "1:")
+    def test_read_3 (self) :
+        r = StringIO("1:\n30878\n")
+        i = netflix_read(r)
+        self.assertEqual(i, "1:")
+    def test_read_4 (self) :
+        r = StringIO("x")
+        i = netflix_read(r)
+        self.assertEqual(i, None)
+    def test_read_5 (self) :
+        r = StringIO("\n")
+        i = netflix_read(r)
+        self.assertEqual(i, None)
+    def test_read_6 (self) :
+        r = StringIO("2043:\n1417435\n")
+        i = netflix_read(r)
+        self.assertEqual(i, "2043:")
+# ---------------------------------------------
+    def test_solve_1 (self) :
+        r = StringIO("1:")
         w = StringIO()
         netflix_solve(r, w)
-        self.assertEqual(w.getvalue(), "2043:\n3\n3\n3\n")
-
+        self.assertEqual(w.getvalue(), "1:\n")
+        '''
+    def test_solve_2 (self) :
+        r = StringIO("1:\n30878")
+        w = StringIO()
+        netflix_solve(r, w)
+        self.assertEqual(w.getvalue(), "1:\n")
+    def test_solve_3 (self) :
+        r = StringIO("")
+        w = StringIO()
+        netflix_solve(r, w)
+        self.assertEqual(w.getvalue(), "1:\n")
+        '''
 main()

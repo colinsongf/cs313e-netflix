@@ -12,7 +12,6 @@ def netflix_read (r) :
 
 # calculates offset
 def predict_offset(a_rating, overall_mean):
-
   rating = float(a_rating) - overall_mean
   return rating
 
