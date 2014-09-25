@@ -18,7 +18,7 @@ def rmse (r, p):
   assert (len(p) == len(r))
   sum = 0
   for i in range (len(p)):
-    sq_diff = (float(r[i]) - int(p[i])) ** 2
+    sq_diff = (float(r[i]) - float(p[i])) ** 2
     sum += sq_diff
   mean = sum / len(r)
   sq_root = mean ** .5
@@ -114,15 +114,13 @@ def netflix_solve (r, w) :
                
                
                ## element = user_offset
-               final_prediction =  float(element) + movie_offset + 3.78
-
+               final_prediction =  movie_mean + float(element) + movie_offset
+               
                ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
                if final_prediction > 5:
                    final_prediction = 5
                if final_prediction < 2:
                    final_prediction = 2
-#               if float(each_id) < 3.2:
-#                   final_prediction = final_prediction - .2
 
                our_predict.append(final_prediction)
      	       
@@ -135,8 +133,6 @@ def netflix_solve (r, w) :
 
       rms2 = rmse(actual, our_predict)
       print("rmse for user:", rms2)
-      
-      
       return
     else:
       f = a.find(":")
