@@ -9,9 +9,10 @@ def netflix_read (r) :
     return line
 
 # calculates offset
-def predict_offset(rating, mean):
-  offset = float(rating) - mean
-  return offset
+def predict_offset(a_rating, overall_mean):
+
+  rating = float(a_rating) - overall_mean
+  return rating
 
 def rmse (r, p):
   assert (len(p) == len(r))
@@ -27,117 +28,133 @@ def netflix_print (w, v) :
   w.write(str(v) + "\n")
 
 def netflix_solve (r, w) :
-  ## this list is used for general input/output
-  cache = []
 
-  # predictions
-  our_predict_u = []
-  our_predict_m = []
 
-  # dict_movie = {movie ID: [avg, mode]}
-  dict_movie = {}
+  # list_movie = search the input movie in c_movie
   # lists all the ratings for individual movie
   list_movie = []
 
-  # dict_user = {customer ID: [avg, mode]}
-  dict_user = {}
+  # list_user = search the input user in c_user
   # lists all the ratings for individual user
   list_user = []
 
-# =============== CACHES ======================
+# -------------- "actual" has actual output -------------------------------------------------------------------
+    
+  actual = []
+  actual_rtgs = open("erb988-ProbeAnswers.txt", "r")
+  for line in actual_rtgs:
+     line = line.strip()
+     f = line.find(":")
+     if f < 0:
+       actual.append(line)
+  
 
-# cache for actual average and mode per customer
-  c_user = open("aip256-cacheAvgAndModeRatingPerCust.txt", "r")
+     
+  
+# -------------- dict_user has customer IDs as keys & average rtgs of each customer as values--------------------------------------------------
+  dict_user = {}
+  c_user = open("ctd446-userAverageRating.txt", "r")
   dict_user = eval(c_user.readline()) 
-  sum_u = 0
-  # i = each user
+  sum = 0
   for i in dict_user.values():
-    # avg_u = average per user
-    # mode_u = mode per user
-    avg_u, mode_u = i[0], i[1]
-    sum_u += float(avg_u)
-  # overall mean across all users
-  user_mean = sum_u/len(dict_user)   
+    sum += float(i) 
+  user_mean = sum / len(dict_user)
+
+# -------------- dict_movie has movie IDs as keys & average rtgs of each movie as values--------------------------------------------------  
 
 # cache for actual average and mode per movie
   c_movie = open("aip256-cacheAvgAndModeRatingPerMovie.txt", "r")
   dict_movie = eval(c_movie.readline())
   sum_m = 0
+  sum_mode = 0
   # i = each movie
-  for i in dict_movie.value():
+  for i in dict_movie.values():
     # avg_m = average per movie
     # mode_m = mode per movie
     avg_m, mode_m = i[0], i[1]
     sum_m += float(avg_m)
+    sum_mode += float(mode_m)
   # overall mean across all movies
   movie_mean = sum_m / len(dict_movie)
+  mode_mean = sum_mode / len(dict_movie)
 
-# -----------------------------------------------------------------
-  while True :
-    a = netflix_read(r)
-    ## output       
-    if not a :
-      for i in range (len(cache)):
-        ## accessing each element from "cache" 
-        ## includes inputted movie IDs & predicted ratings for inputted customer IDs
-        ## (predicting ratings include user_mean & user offset)
-        line_c = str(cache[i])             
-        f = line_c.find(":")
-
-        ## runs if line_c contains a movie ID
-        if f > -1:
-          movie_id = line_c[:f]
-
-        ## runs if line_c contains a rating
-        ## uses the movie_id from loop just above & uses it to calculate MOVIE OFFSET
-        else:
-#           NEED TO FIX LINE BELOW (dict_movie[movie_id] now returns a list of 2 values)
-          # movie_offset = predict_offset(dict_movie[movie_id], movie_mean)
-
-          # final_prediction = rating + movie_offset + movie_mode_offset
-          final_prediction = float(line_c) + movie_offset + movie_mode_offset
-
-          ## our_predict_m = list of predicted ratings (what's in this?)
-          our_predict_m.append(final_prediction)
-
-#           NEED TO FIX LINE BELOW (dict_movie[movie_id] now returns a list of 2 values)
-          ## list_movie = list of actual movie ratings
-          list_movie.append(dict_movie[movie_id])
+# --------------------------------------------------------------------------------------------------------------------------------------
   
-        ## printing final prediction (supposed to)
-        netflix_print(w, cache[i])
+  probe = []
 
-      rms = rmse(list_user, our_predict_u)
-      rms2 = rmse(list_movie, our_predict_m)
-      print("user rmse:", rms)
-      print("movie rmse:", rms2)
-      print("rmse (average of movie and user)", (rms + rms2) / 2)
+  # u_offset = dictionary for user_offset with user ID as keys
+  u_offset = []
+
+  # our_predict = list for input customer ID
+  our_predict = []  
+  while True :
+    a = netflix_read(r) 
+
+    ## this "if" runs after reading all the input       
+    if not a :
+ 
+      for i in range (len(u_offset)):
+            ## accessing each element from "cache" which includes iputted movie IDs & 
+            ## predicted ratings for iputted customer IDs. 
+            ## (predicting ratings include user_mean & user offset)
+            element = str(u_offset[i])
+            each_id = str(probe[i])
+            f = element.find(":")
+            g = each_id.find(":")
+
+            ## "if" runs if each_element contains a movie ID
+            if f > -1:
+               movie_id = int(element[:f])
+               
+            
+            ## uses the movie-id from "if" statement & uses that movie_id to calculate movie offset
+            else:
+                           
+               movie_offset = predict_offset(dict_movie[movie_id][0], movie_mean)
+               
+               
+               ## element = user_offset
+               final_prediction =  float(element) + movie_offset + 3.78
+
+               ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
+               if final_prediction > 5:
+                   final_prediction = 5
+               if final_prediction < 2:
+                   final_prediction = 2
+#               if float(each_id) < 3.2:
+#                   final_prediction = final_prediction - .2
+
+               our_predict.append(final_prediction)
+     	       
+		## list_movie = list of actual movie ratings
+               list_movie.append(dict_movie[movie_id])
+               netflix_print(w, final_prediction)
+               
+            ## printing final prediction (supposed to)
+#            netflix_print(w, cache[i])
+
+      rms2 = rmse(actual, our_predict)
+      print("rmse for user:", rms2)
+      
+      
       return
-
-    # reads input
     else:
       f = a.find(":")
-      ## runs for user IDs
+      ## if runs for user IDs
       if f < 0 :
-          # a = customer ID for this loop
-          '''      
-          ## adding the actual ratings for user "a"
-          list_user.append(dict_user[a])
-
+          # a = customer ID for this if statement
+          probe.append(dict_user[a])
           ## calculates user offset
           user_offset = predict_offset(dict_user[a], user_mean)
-          prediction = user_mean - user_offset
                   
-          # our_predict contains predicted ratings with user offset
-          our_predict_u.append(prediction)
-        
-          # cache contains user rating to print 
-          cache.append(prediction)
-          '''
-      ## runs if it finds the movie ID in input     
-      else:
-          # a = movie ID for this loop      
-          cache.append(a)
-# --------------------------------------------------------------------------------------
+          # u_offset contains predicted ratings with user offset
+          u_offset.append(user_offset)
+          
+      ## this "else" runs if it finds the movie ID in input     
+      else:        
+          u_offset.append(a)
+          probe.append(a)
 
+  
 netflix_solve(sys.stdin, sys.stdout)
+
