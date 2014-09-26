@@ -20,7 +20,7 @@ def rmse (r, p):
   for i in range (len(p)):
       s = sum(map(lambda x, y: (x-y) ** 2, r, p))
   if len(p) > 0 :
-    return (s/len(p)) ** .5
+    return (s//len(p)) ** .5
   else:
     return 0
 
@@ -108,9 +108,9 @@ def netflix_solve (r, w) :
                if final_prediction > 5:
                    final_prediction = 5
                if (float(element) + movie_offset) < 0:
-                   final_prediction -= .1443435
+                   final_prediction -= .1
                if (float(element) + movie_offset) > 0:
-                   final_prediction += .0553335
+                   final_prediction += .05
                if float(element) < 0:
                    final_prediction -=.005
                if float(element) > 0:
@@ -123,11 +123,9 @@ def netflix_solve (r, w) :
                our_predict.append(float(final_prediction))     	       
                netflix_print(w, (round(float(final_prediction), 1)))
 
-#      for i in range (len(our_predict)):
-#         print(list_movie[i], our_predict[i])
       rms2 = format((rmse(list_movie, our_predict)), ".4f")
-      if rms2 > 0:
-        print("RMSE:", rms2)("rmse:", rms2)
+      if float(rms2) > 0:
+        print("RMSE:", rms2)
       return
       
     else:
