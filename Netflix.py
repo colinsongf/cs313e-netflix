@@ -4,7 +4,9 @@ import time
 def netflix_read (r) :
   for line in r:
     line = line.strip()
-    if line == "" :
+    if line == " " :
+      return
+    elif line == "\n":
       return
     return line
 
@@ -14,9 +16,13 @@ def predict_offset(a_rating, overall_mean):
   return rating
 
 def rmse (r, p):
+  s = 0
   for i in range (len(p)):
       s = sum(map(lambda x, y: (x-y) ** 2, r, p))
-  return (s/len(p)) ** .5
+  if len(p) > 0 :
+    return (s/len(p)) ** .5
+  else:
+    return 0
 
 def netflix_print (w, v) :
   w.write(str(v) + "\n")
@@ -71,7 +77,6 @@ def netflix_solve (r, w) :
 
   # our_predict = list for input customer ID
   our_predict = [] 
-  start = time.time()
   m_id = ""
   while True :
     a = netflix_read(r) 
@@ -97,21 +102,20 @@ def netflix_solve (r, w) :
                movie_offset = predict_offset(dict_movie[movie_id], movie_mean)
                               
                ## element = user_offset
-               final_prediction =  movie_mean + float(element) + movie_offset
+               final_prediction =  3.3 + float(element) + movie_offset
                
                ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
                if final_prediction > 5:
                    final_prediction = 5
-               if final_prediction < 2:
-                   final_prediction = 2
+               if (float(element) + movie_offset) < 0:
+                   final_prediction -= .1445
               
                our_predict.append(float(final_prediction))     	       
                netflix_print(w, (round(float(final_prediction), 1)))
-
+#      for i in range (len(our_predict)):
+#         print(list_movie[i], our_predict[i])
       rms2 = rmse(list_movie, our_predict)
       print("rmse:", rms2)
-      end = time.time()
-      print(end-start)
       return
     else:
       
