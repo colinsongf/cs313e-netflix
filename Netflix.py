@@ -108,8 +108,10 @@ def netflix_solve (r, w) :
                if final_prediction > 5:
                    final_prediction = 5
                if (float(element) + movie_offset) < 0:
-                   final_prediction -= .1445
-              
+                   final_prediction -= .1443435
+               if (float(element) + movie_offset) > 0:
+                   final_prediction += .0553335
+
                our_predict.append(float(final_prediction))     	       
                netflix_print(w, (round(float(final_prediction), 1)))
 #      for i in range (len(our_predict)):
