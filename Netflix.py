@@ -104,7 +104,7 @@ def netflix_solve (r, w) :
             if f > -1:
                movie_id = int(element[:f])
                our_predict.append(element)
-#               netflix_print(w, element)       
+               netflix_print(w, element)       
             ## uses the movie-id from "if" statement & uses that movie_id to calculate movie offset
             else:
                          
@@ -122,8 +122,8 @@ def netflix_solve (r, w) :
                our_predict.append(str(final_prediction))     	       
 #               netflix_print(w, (round(float(final_prediction), 1)))
 #      print(len(list_movie), len(our_predict))
-#      rms2 = rmse(list_movie, our_predict)
-#      print("rmse:", rms2)
+      rms2 = rmse(list_movie, our_predict)
+      print("RMSE:", rms2)
       end = time.time()
       print(end-start)
       return
