@@ -23,9 +23,9 @@ class TestNetflix (TestCase) :
         i = netflix_read(r)
         self.assertEqual(i, "1:")
     def test_read_4 (self) :
-        r = StringIO("\n")
+        r = StringIO("4783:")
         i = netflix_read(r)
-        self.assertEqual(i, None)
+        self.assertEqual(i, "4783:")
     def test_read_5 (self) :
         r = StringIO("2043:\n1417435\n")
         i = netflix_read(r)
