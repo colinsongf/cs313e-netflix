@@ -1,6 +1,6 @@
 
 import sys
-import time
+import math
 def netflix_read (r) :
   for line in r:
     line = line.strip()
@@ -108,15 +108,31 @@ def netflix_solve (r, w) :
                if final_prediction > 5:
                    final_prediction = 5
                if (float(element) + movie_offset) < 0:
-                   final_prediction -= .1445
-              
+                   final_prediction -= .1443435
+               if (float(element) + movie_offset) > 0:
+                   final_prediction += .0553335
+               if float(element) < 0:
+                   final_prediction -=.005
+               if float(element) > 0:
+                   final_prediction +=.005
+               if movie_offset < 0:
+                   final_prediction +=.025
+               if movie_offset > 0:
+                   final_prediction -=.025
+
                our_predict.append(float(final_prediction))     	       
                netflix_print(w, (round(float(final_prediction), 1)))
+<<<<<<< HEAD
 #      for i in range (len(our_predict)):
 #         print(list_movie[i], our_predict[i])
       rms2 = rmse(list_movie, our_predict)
       if rms2 > 0:
         print("RMSE:", rms2)
+=======
+
+      rms2 = format((rmse(list_movie, our_predict)), ".4f")
+      print("rmse:", rms2)
+>>>>>>> ce54b2a3a737d4fe3daa891b682ce38658ac7bce
       return
       
     else:
