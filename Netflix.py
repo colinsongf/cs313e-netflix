@@ -14,7 +14,7 @@ def predict_offset(a_rating, overall_mean):
   return rating
 
 def rmse (r, p):
-  for i in range (len(p)+1):
+  for i in range (len(p)):
       s = sum(map(lambda x, y: (x-y) ** 2, r, p))
   return (s/len(p)) ** .5
 
