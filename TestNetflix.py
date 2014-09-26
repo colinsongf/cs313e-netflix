@@ -3,7 +3,7 @@
 from io       import StringIO
 from unittest import main, TestCase
 
-from Netflix import netflix_read, predict_ratings, netflix_print, netflix_solve
+from Netflix import netflix_read, netflix_solve, predict_offset, rmse, netflix_print
 
 # -----------
 # TestNetflix
@@ -23,14 +23,10 @@ class TestNetflix (TestCase) :
         i = netflix_read(r)
         self.assertEqual(i, "1:")
     def test_read_4 (self) :
-        r = StringIO("x")
-        i = netflix_read(r)
-        self.assertEqual(i, None)
-    def test_read_5 (self) :
         r = StringIO("\n")
         i = netflix_read(r)
         self.assertEqual(i, None)
-    def test_read_6 (self) :
+    def test_read_5 (self) :
         r = StringIO("2043:\n1417435\n")
         i = netflix_read(r)
         self.assertEqual(i, "2043:")
