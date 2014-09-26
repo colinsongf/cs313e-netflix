@@ -122,17 +122,12 @@ def netflix_solve (r, w) :
 
                our_predict.append(float(final_prediction))     	       
                netflix_print(w, (round(float(final_prediction), 1)))
-<<<<<<< HEAD
+
 #      for i in range (len(our_predict)):
 #         print(list_movie[i], our_predict[i])
-      rms2 = rmse(list_movie, our_predict)
-      if rms2 > 0:
-        print("RMSE:", rms2)
-=======
-
       rms2 = format((rmse(list_movie, our_predict)), ".4f")
-      print("rmse:", rms2)
->>>>>>> ce54b2a3a737d4fe3daa891b682ce38658ac7bce
+      if rms2 > 0:
+        print("RMSE:", rms2)("rmse:", rms2)
       return
       
     else:
