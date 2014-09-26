@@ -82,7 +82,7 @@ def netflix_solve (r, w) :
     a = netflix_read(r) 
 
     ## this "if" runs after reading all the input       
-    if not a :
+    if not a:
       
       for i in range (len(u_offset)):
             ## accessing each element from "cache" which includes iputted movie IDs & 
@@ -115,8 +115,10 @@ def netflix_solve (r, w) :
 #      for i in range (len(our_predict)):
 #         print(list_movie[i], our_predict[i])
       rms2 = rmse(list_movie, our_predict)
-      print("rmse:", rms2)
+      if rms2 > 0:
+        print("RMSE:", rms2)
       return
+      
     else:
       
       f = a.find(":")
