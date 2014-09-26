@@ -32,9 +32,9 @@ class TestNetflix (TestCase) :
         self.assertEqual(i, "2043:")
 # ---------------------------------------------
     def test_solve_1 (self) :
-        r = StringIO("1:")
+        r = StringIO("3417:")
         w = StringIO()
         netflix_solve(r, w)
-        self.assertEqual(w.getvalue(), "1:\n")
+        self.assertEqual(w.getvalue(), "3417:\n")
 
 main()
