@@ -14,9 +14,9 @@ def predict_offset(a_rating, overall_mean):
   return rating
 
 def rmse (r, p):
-  for i in range (len(p)):
+  for i in range (len(p)+1):
       s = sum(map(lambda x, y: (x-y) ** 2, r, p))
-  return (s/len(r)) ** .5
+  return (s/len(p)) ** .5
 
 def netflix_print (w, v) :
   w.write(str(v) + "\n")
@@ -26,7 +26,7 @@ def netflix_solve (r, w) :
 # -------------- "actual" has actual output -------------------------------------------------------------------
   id_rtg = []
   actual = {}
-  actual_rtgs = open("testing.txt", "r")
+  actual_rtgs = open("hs9234-probe_mv_rtg.txt", "r")
   for line in actual_rtgs:    
     line = line.strip()
     f = line.find(":")
@@ -97,7 +97,7 @@ def netflix_solve (r, w) :
                movie_offset = predict_offset(dict_movie[movie_id], movie_mean)
                               
                ## element = user_offset
-               final_prediction =  movie + float(element) + movie_offset
+               final_prediction =  movie_mean + float(element) + movie_offset
                
                ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
                if final_prediction > 5:
