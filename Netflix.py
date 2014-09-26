@@ -1,6 +1,7 @@
 
 import sys
 import math
+
 def netflix_read (r) :
   for line in r:
     line = line.strip()
