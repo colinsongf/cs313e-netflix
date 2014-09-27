@@ -67,7 +67,7 @@ def netflix_solve (r, w) :
 
     ## this "if" runs after reading all the input       
     if not a:
-<<<<<<< HEAD
+
 
       if len(probe) == len(probe_ans):
         u_offset = []
@@ -149,49 +149,6 @@ def netflix_solve (r, w) :
             list_user = actual[int(m_id)]
 
       rms2 = format((rmse(list_movie, u_offset)), ".2f")
-=======
-      
-      for i in range (len(u_offset)):
-            ## accessing each element from "cache" which includes iputted movie IDs & 
-            ## predicted ratings for iputted customer IDs. 
-            ## (predicting ratings include user_mean & user offset)
-            element = str(u_offset[i])
-            f = element.find(":")
-
-            ## "if" runs if each_element contains a movie ID
-            if f > -1:
-               movie_id = int(element[:f])
-             #  our_predict.append(element)
-               netflix_print(w, element)       
-            ## uses the movie-id from "if" statement & uses that movie_id to calculate movie offset
-            else:
-                         
-               movie_offset = predict_offset(dict_movie[movie_id], movie_mean)
-                              
-               ## element = user_offset
-               final_prediction =  3.3 + float(element) + movie_offset
-               
-               ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
-               if final_prediction > 5:
-                   final_prediction = 5
-               if (float(element) + movie_offset) < 0:
-                   final_prediction -= .1
-               if (float(element) + movie_offset) > 0:
-                   final_prediction += .05
-               if float(element) < 0:
-                   final_prediction -=.005
-               if float(element) > 0:
-                   final_prediction +=.005
-               if movie_offset < 0:
-                   final_prediction +=.025
-               if movie_offset > 0:
-                   final_prediction -=.025
-
-               our_predict.append(float(final_prediction))     	       
-               netflix_print(w, (round(float(final_prediction), 1)))
-
-      rms2 = format((rmse(list_movie, our_predict)), ".2f")
->>>>>>> 989287257e0377db97033c5610a0bf90c4cbcd75
       if float(rms2) > 0:
         print("RMSE:", rms2)
       return
