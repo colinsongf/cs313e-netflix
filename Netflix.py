@@ -1,7 +1,5 @@
-
 import sys
 import math
-
 def netflix_read (r) :
   for line in r:
     line = line.strip()
@@ -26,14 +24,20 @@ def rmse (r, p):
     return 0
 
 def netflix_print (w, v) :
-  w.write(str(v) + "\n")
+   w.write(str(v) + "\n")
 
 def netflix_solve (r, w) :
 
 # -------------- "actual" has actual output -------------------------------------------------------------------
+  probe_ans = []
+  actual_rts = open("/u/prat0318/netflix-tests/erb988-ProbeAnswers.txt", "r")
+  for line in actual_rts:
+     line = line.strip()
+     probe_ans.append(line)
+
   id_rtg = []
   actual = {}
-  actual_rtgs = open("hs9234-probe_mv_rtg.txt", "r")
+  actual_rtgs = open("/u/prat0318/netflix-tests/hs9234-probe_mv_rtg.txt", "r")
   for line in actual_rtgs:    
     line = line.strip()
     f = line.find(":")
@@ -43,116 +47,113 @@ def netflix_solve (r, w) :
       actual[int(line[:f])] = id_rtg
       id_rtg = []
 
+
 # -------------- dict_user has customer IDs as keys & average rtgs of each customer as values--------------------------------------------------
   dict_user = {}
-  c_user = open("ctd446-userAverageRating.txt", "r")
+  c_user = open("/u/prat0318/netflix-tests/hs9234_user_offset_dict.txt", "r")
   dict_user = eval(c_user.readline()) 
-  sum = 0
-  for i in dict_user.values():
-    sum += float(i) 
-  user_mean = sum / len(dict_user)
+  user_mean = 3.67410130345234
 
 # -------------- dict_movie has movie IDs as keys & average rtgs of each movie as values--------------------------------------------------  
   dict_movie = {}
-  c_movie = open("hs9234-mvrtg.txt", "r")
-  movie = ""
-  movie_rtg = ""
-  sum = 0
-  for line in c_movie:
-     movie_line = line.strip()
-     space = movie_line.find(" ")
-     if space > -1:
-       movie = int(movie_line[:space])
-       movie_rtg = float(movie_line[space + 1:])
-       dict_movie[movie] = movie_rtg
-     sum = sum + float(movie_rtg)
-  movie_mean = sum / len(dict_movie)
+  c_movie = open("/u/prat0318/netflix-tests/hs9234_movie_offset_dict.txt", "r")
+  dict_movie = eval(c_movie.readline())
+  movie_mean = 3.2285762521103103
 
 # --------------------------------------------------------------------------------------------------------------------------------------
-  
   probe = []
-  list_movie = []
-
-  # u_offset = dictionary for user_offset with user ID as keys
-  u_offset = []
-
-  # our_predict = list for input customer ID
-  our_predict = [] 
-  m_id = ""
   while True :
     a = netflix_read(r) 
 
     ## this "if" runs after reading all the input       
     if not a:
-      
-      for i in range (len(u_offset)):
-            ## accessing each element from "cache" which includes iputted movie IDs & 
-            ## predicted ratings for iputted customer IDs. 
-            ## (predicting ratings include user_mean & user offset)
-            element = str(u_offset[i])
-            f = element.find(":")
 
-            ## "if" runs if each_element contains a movie ID
-            if f > -1:
-               movie_id = int(element[:f])
-             #  our_predict.append(element)
-               netflix_print(w, element)       
-            ## uses the movie-id from "if" statement & uses that movie_id to calculate movie offset
-            else:
-                         
-               movie_offset = predict_offset(dict_movie[movie_id], movie_mean)
-                              
-               ## element = user_offset
-               final_prediction =  3.3 + float(element) + movie_offset
-               
-               ## our_predict_m = list of predicted ratings with movie_offset, user_offset & user_mean
-               if final_prediction > 5:
-                   final_prediction = 5
-               if (float(element) + movie_offset) < 0:
-                   final_prediction -= .1
-               if (float(element) + movie_offset) > 0:
-                   final_prediction += .05
-               if float(element) < 0:
-                   final_prediction -=.005
-               if float(element) > 0:
-                   final_prediction +=.005
-               if movie_offset < 0:
-                   final_prediction +=.025
-               if movie_offset > 0:
-                   final_prediction -=.025
+      if len(probe) == len(probe_ans):
+        u_offset = []
+        list_movie = []
+        m_id = ""
+        for i in probe:
+          
+          f = i.find(":")
+          ## if runs for user IDs
+          if f < 0 :
+            # a = customer ID for this if statement
+            list_movie.append(float(i))
+             
+            final_prediction = float(dict_user[i]) + float(dict_movie[m_id]) + 3.3
+            
+            if final_prediction > 5:
+                  final_prediction = 5
+            if (float(dict_user[i]) + float(dict_movie[m_id])) < 0:
+                  final_prediction -= .1
+            if (float(dict_user[i]) + float(dict_movie[m_id])) > 0:
+                  final_prediction += .05
+            if float(dict_user[i]) < 0:
+                  final_prediction -=.005
+            if float(dict_user[i]) > 0:
+                  final_prediction +=.005
+            if float(dict_movie[m_id]) < 0:
+                  final_prediction +=.025
+            if float(dict_movie[m_id]) > 0:
+                  final_prediction -=.025
 
-               our_predict.append(float(final_prediction))     	       
-               netflix_print(w, (round(float(final_prediction), 1)))
+            u_offset.append(final_prediction)
+            str(final_prediction)
+            print(format(final_prediction, ".1f"))   
+          else:
+            # list_user has all the customer ID & actual ratings for a specific "a = movie_id"
+            m_id = i[:f]
+            print(i)
+            
+      else:
+        u_offset = []
+        list_movie = []
+        m_id = ""
+        for i in probe:
+          f = i.find(":")
+          ## if runs for user IDs
+          if f < 0 :
+            # a = customer ID for this if statement
+            for id in list_user:
+              f = id.find(" ")
+              if i == id[:f]:
+                 list_movie.append(float(id[f+1:]))
+           
+            final_prediction = float(dict_user[i]) + float(dict_movie[m_id]) + 3.3
+          
+            if final_prediction > 5:
+                  final_prediction = 5
+            if (float(dict_user[i]) + float(dict_movie[m_id])) < 0:
+                  final_prediction -= .1
+            if (float(dict_user[i]) + float(dict_movie[m_id])) > 0:
+                  final_prediction += .05
+            if float(dict_user[i]) < 0:
+                  final_prediction -=.005
+            if float(dict_user[i]) > 0:
+                  final_prediction +=.005
+            if float(dict_movie[m_id]) < 0:
+                  final_prediction +=.025
+            if float(dict_movie[m_id]) > 0:
+                  final_prediction -=.025
 
-      rms2 = format((rmse(list_movie, our_predict)), ".4f")
+            u_offset.append(final_prediction)
+            str(final_prediction)
+            print(format(final_prediction, ".1f"))
+          ## this "else" runs if it finds the movie ID in input     
+          else:
+            print(i)
+            list_user = []
+            # list_user has all the customer ID & actual ratings for a specific "a = movie_id"
+            m_id = i[:f]
+            list_user = actual[int(m_id)]
+
+      rms2 = format((rmse(list_movie, u_offset)), ".2f")
       if float(rms2) > 0:
         print("RMSE:", rms2)
       return
       
     else:
-      
-      f = a.find(":")
-      ## if runs for user IDs
-      if f < 0 :
-          # a = customer ID for this if statement
-          for id in list_user:
-            f = id.find(" ")
-            if a == id[:f]:
-               list_movie.append(float(id[f+1:]))
-              
-          ## calculates user offset
-          user_offset = predict_offset(dict_user[a], user_mean)
-                  
-          # u_offset contains predicted ratings with user offset
-          u_offset.append(user_offset)
-          
-      ## this "else" runs if it finds the movie ID in input     
-      else:
-          list_user = []
-          u_offset.append(a)
-          # list_user has all the customer ID & actual ratings for a specific "a = movie_id"
-          a = a[:f]
-          list_user = actual[int(a)]
+      probe.append(a)
 
 netflix_solve(sys.stdin, sys.stdout)
 
