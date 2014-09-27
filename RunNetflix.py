@@ -4,8 +4,6 @@ from Netflix import netflix_solve
 
 netflix_solve(sys.stdin, sys.stdout)
 
-
-
 """
 % RunNetflix.py < RunNetflix.in > RunNetflix.out
 

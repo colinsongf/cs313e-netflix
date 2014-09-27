@@ -5,26 +5,24 @@ def netflix_read (r) :
     line = line.strip()
     if line == " " :
       return
-#    elif line == "\n":
-#      return
     return line
 
 # calculates offset
 def predict_offset(a_rating, overall_mean):
   rating = float(a_rating) - overall_mean
   return rating
-
+'''
 def rms (r, p):
   assert (len(p) == len(r))
   sum = 0
   for i in range (len(p)):
     sum += (float(r[i]) - float(p[i])) ** 2
   return (sum / len(r)) ** .5
-
+'''
 def rmse (r, p):
   s = 0
   for i in range (len(p)):
-      s = sum(map(lambda x, y: (x-y) ** 2, r, p))
+    s = sum(map(lambda x, y: (x-y) ** 2, r, p))
   return (s//len(p)) ** .5
 
 def netflix_print (w, v) :
@@ -85,7 +83,7 @@ def netflix_solve (r, w) :
             m_id = probe[i][:f]
             printing.append(probe[i])
 
-        rms2 = format((rms(list_movie, u_offset)), ".2f")
+        rms2 = format((rmse(list_movie, u_offset)), ".2f")
         netflix_print(w, printing)
         print("RMSE:", rms2)
         end = time.time()
@@ -93,6 +91,7 @@ def netflix_solve (r, w) :
         return       
 
       else:
+        printing = []
         id_rtg = []
         actual = {}
         actual_rtgs = open("hs9234-probe_mv_rtg.txt", "r")
@@ -135,17 +134,17 @@ def netflix_solve (r, w) :
                   final_prediction -=.025
 
             u_offset.append(final_prediction)
-            str(final_prediction)
-            netflix_print(w, format(final_prediction, ".1f"))
+            printing.append(round(final_prediction, 2))
           ## this "else" runs if it finds the movie ID in input     
           else:
-            netflix_print(w, i)
+            printing.append(i)
             list_user = []
             # list_user has all the customer ID & actual ratings for a specific "a = movie_id"
             m_id = i[:f]
             list_user = actual[int(m_id)]
 
         rms2 = format((rmse(list_movie, u_offset)), ".2f")
+        netflix_print(w, printing)
         print("RMSE:", rms2)
         end = time.time()
         print(end-start)
