@@ -48,7 +48,7 @@ def netflix_solve (r, w) :
             netflix_print(w, round(prediction, 1))
 
         rms = (sum / count) ** .5
-        print("RMSE:", rms)
+        print("RMSE:", round(rms, 2))
         return      
 
       else:
