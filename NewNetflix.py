@@ -1,5 +1,6 @@
 import time
 import math
+import sys
 def netflix_read (r) :
   for line in r:
     line = line.strip()
@@ -62,8 +63,8 @@ def netflix_solve (r, w) :
     ## this "if" runs after reading all the input       
     if not a:
       if len(probe) == len(probe_ans):
-        printing = []
-        u_offset = []
+        u_offset = {}
+        dc = {}
         list_movie = []
         m_id = ""
         for i in range (len(probe)):
@@ -75,23 +76,36 @@ def netflix_solve (r, w) :
             list_movie.append(float(probe_ans[i]))
              
             final_prediction = float(dict_user[probe[i]]) + float(dict_movie[m_id]) + 3.3
+            
+            if final_prediction > 5:
+                  final_prediction = 5
+            if (float(dict_user[probe[i]]) + float(dict_movie[m_id])) < 0:
+                  final_prediction -= .1
+            if (float(dict_user[probe[i]]) + float(dict_movie[m_id])) > 0:
+                  final_prediction += .05
+            if float(dict_user[probe[i]]) < 0:
+                  final_prediction -=.005
+            if float(dict_user[probe[i]]) > 0:
+                  final_prediction +=.005
+            if float(dict_movie[m_id]) < 0:
+                  final_prediction +=.025
+            if float(dict_movie[m_id]) > 0:
+                  final_prediction -=.025
 
-            u_offset.append(final_prediction)
-            printing.append(round(final_prediction, 2))  
+            u_offset[int(probe[i])] = final_prediction
+            str(final_prediction)
+            print(probe[i], final_prediction)
           else:
+            u_offset = {}
             # list_user has all the customer ID & actual ratings for a specific "a = movie_id"
             m_id = probe[i][:f]
-            printing.append(probe[i])
-
-        rms2 = format((rmse(list_movie, u_offset)), ".2f")
-        netflix_print(w, printing)
-        print("RMSE:", rms2)
-        end = time.time()
-        print(end-start)
-        return       
+            print(probe[i])
+#        rms2 = format((rms(list_movie, u_offset)), ".2f")
+#        if float(rms2) > 0:
+#        print(dc)            
 
       else:
-        printing = []
+
         id_rtg = []
         actual = {}
         actual_rtgs = open("hs9234-probe_mv_rtg.txt", "r")
@@ -103,6 +117,7 @@ def netflix_solve (r, w) :
            else:
              actual[int(line[:f])] = id_rtg
              id_rtg = []
+
         u_offset = []
         list_movie = []
         m_id = ""
@@ -134,23 +149,21 @@ def netflix_solve (r, w) :
                   final_prediction -=.025
 
             u_offset.append(final_prediction)
-            printing.append(round(final_prediction, 2))
+            str(final_prediction)
+            print(format(final_prediction, ".1f"))
           ## this "else" runs if it finds the movie ID in input     
           else:
-            printing.append(i)
+            print(i)
             list_user = []
             # list_user has all the customer ID & actual ratings for a specific "a = movie_id"
             m_id = i[:f]
             list_user = actual[int(m_id)]
 
         rms2 = format((rmse(list_movie, u_offset)), ".2f")
-        netflix_print(w, printing)
-        print("RMSE:", rms2)
-        end = time.time()
-        print(end-start)
-        return
+        if float(rms2) > 0:
+          print("RMSE:", rms2)
+      return
       
     else:
       probe.append(a)
-
-
+netflix_solve(sys.stdin, sys.stdout)
