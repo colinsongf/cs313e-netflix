@@ -29,7 +29,7 @@ def netflix_solve (r, w) :
 
     ## this "if" runs after reading all the input       
     if not a:
-      if len(probe) > 30000:
+      if probe[0] == "3417:":
         m = 0
         sum = 0
         count = 0
@@ -47,8 +47,8 @@ def netflix_solve (r, w) :
             sum += (actual_id - prediction) ** 2
             netflix_print(w, round(prediction, 1))
 
-        rms = (sum / count) ** .5
-        print("RMSE:", round(rms, 2))
+        rms = (sum // count) ** .5
+        print("RMSE:", format(rms, ".2f"))
         return      
 
       else:
@@ -69,7 +69,7 @@ def netflix_solve (r, w) :
             sum += (actual_id - prediction) ** 2
             netflix_print(w, round(prediction, 1))
 
-        rms = (sum // count) ** .5
+        rms = (sum / count) ** .5
         print("RMSE:", format(rms, ".2f"))
         return      
       
