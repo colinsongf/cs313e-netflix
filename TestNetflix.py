@@ -3,7 +3,7 @@
 from io       import StringIO
 from unittest import main, TestCase
 
-from Netflix import netflix_read, netflix_solve, predict_offset, rmse, netflix_print
+from Netflix import netflix_read, netflix_solve, rmse, netflix_print
 
 # -----------
 # TestNetflix
@@ -32,9 +32,9 @@ class TestNetflix (TestCase) :
         self.assertEqual(i, "2043:")
 # ---------------------------------------------
     def test_solve_1 (self) :
-        r = StringIO("3417:")
+        r = StringIO("1:\n548064\n")
         w = StringIO()
         netflix_solve(r, w)
-        self.assertEqual(w.getvalue(), "3417:\n")
+        self.assertEqual(w.getvalue(), "1:\n3.6\n")
 
 main()

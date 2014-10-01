@@ -17,10 +17,10 @@ def rmse (r, p):
 def netflix_solve (r, w) :
 
   probe_ans = {}
-  probe_ans = pickle.load( open( "hs9234_probe_ans.p", "rb" ) )
+  probe_ans = pickle.load( open( "/u/prat0318/netflix-tests/hs9234_probe_ans.p", "rb" ) )
 
   dict_user = {}
-  dict_user = pickle.load( open( "hs9234_offsets.p", "rb" ) )
+  dict_user = pickle.load( open( "/u/prat0318/netflix-tests/hs9234_offsets.p", "rb" ) )
 
 # --------------------------------------------------------------------------------------------------------------------------------------
   probe = []
